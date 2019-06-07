@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ColorPropType, StyleSheet, View, ViewPropTypes as RNViewPropTypes } from 'react-native';
+import { ColorPropType, StyleSheet, Text, View, ViewPropTypes as RNViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Picker from './picker';
@@ -8,7 +8,7 @@ const ViewPropTypes = RNViewPropTypes || View.propTypes;
 
 const styles = StyleSheet.create({
   picker: {
-    flex: 1,
+    flex: 1
   },
   row: {
     flexDirection: 'row',
@@ -74,7 +74,9 @@ export default class DatePicker extends PureComponent {
     const maxYear = maximumDate.getFullYear();
 
     for (let i = 1; i <= 12; i += 1) {
-      this.state.monthRange.push({ value: i, label: `${i}${labelUnit.month}` });
+      const monthFormatted = moment(i, 'M').format('MMM');
+
+      this.state.monthRange.push({ value: i, label: `${monthFormatted}${labelUnit.month}` });
     }
 
     this.state.yearRange.push({ value: minYear, label: `${minYear}${labelUnit.year}` });
@@ -206,6 +208,8 @@ export default class DatePicker extends PureComponent {
 
     const [hours, minutes] = [[], []];
 
+    let timeIndicator = []
+
     for (let i = 0; i <= 24; i += 1) {
       hours.push(i);
     }
@@ -213,6 +217,11 @@ export default class DatePicker extends PureComponent {
     for (let i = 0; i <= 59; i += 1) {
       minutes.push(i);
     }
+
+    timeIndicator.push('AM');
+    timeIndicator.push('PM');
+
+//A AM
 
     return [
       <View key='hour' style={styles.picker}>
@@ -233,6 +242,15 @@ export default class DatePicker extends PureComponent {
           onValueChange={this.onMinuteChange}
         />
       </View>,
+
+      // <View key='timeIndicator' style={styles.picker}>
+      //   <Picker
+      //     ref={(timeIndicator) => { this.timeIndicatorComponent = timeIndicator; }}
+      //     {...propsStyles}
+      //     selectedValue={moment(this.state.date.getHours(), 'H').format('A')}
+      //     pickerData={timeIndicator}
+      //   />
+      // </View>,
     ];
   }
 
